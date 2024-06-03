@@ -58,6 +58,7 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
 
     @Override
     public Article findById(Long id) {
+
         return jdbcTemplate.queryForObject("""
             SELECT id,  board_id,  author_id,  title,  content,  created_date,  modified_date
             FROM article

@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import java.util.List;
 
+import com.example.demo.repository.ArticleRepositoryJdbc;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +39,10 @@ public class ArticleService {
         Member member = memberRepository.findById(article.getAuthorId());
         Board board = boardRepository.findById(article.getBoardId());
         return ArticleResponse.of(article, member, board);
+    }
+
+    public List<Article> getAll() {
+        return articleRepository.findAll();
     }
 
     public List<ArticleResponse> getByBoardId(Long boardId) {
