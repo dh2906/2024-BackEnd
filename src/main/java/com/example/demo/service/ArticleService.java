@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import java.util.List;
 
-import com.example.demo.repository.ArticleRepositoryJdbc;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,7 +63,7 @@ public class ArticleService {
             request.title(),
             request.description()
         );
-        Article saved = articleRepository.insert(article);
+        Article saved = articleRepository.update(article);
         Member member = memberRepository.findById(saved.getAuthorId());
         Board board = boardRepository.findById(saved.getBoardId());
         return ArticleResponse.of(saved, member, board);

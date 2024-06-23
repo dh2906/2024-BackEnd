@@ -49,13 +49,6 @@ public class ArticleRepositoryMemory implements ArticleRepository {
         return articles.getOrDefault(id, null);
     }
 
-    @Override
-    public Article insert(Article article) {
-        long id = autoincrement.getAndIncrement();
-        articles.put(id, article);
-        article.setId(id);
-        return article;
-    }
 
     @Override
     public Article update(Article article) {

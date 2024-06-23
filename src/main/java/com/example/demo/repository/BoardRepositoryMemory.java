@@ -33,12 +33,6 @@ public class BoardRepositoryMemory implements BoardRepository {
     }
 
     @Override
-    public Board insert(Board board) {
-        boards.put(autoincrement.getAndIncrement(), board);
-        return board;
-    }
-
-    @Override
     public void deleteById(Long id) {
         boards.remove(id);
     }

@@ -58,6 +58,10 @@ public class MemberController {
     public ResponseEntity<MemberResponse> create(
         @Valid @RequestBody MemberCreateRequest request
     ) {
+        if (memberService.getAll().stream()
+                .anyMatch(member -> member.email().equals(request.email())))
+            throw new ExceptionGenerator(StatusEnum.CREATE_OR_EDIT_CONFLICT_EMAIL);
+
         MemberResponse response = memberService.create(request);
         return ResponseEntity.ok(response);
     }
@@ -69,7 +73,7 @@ public class MemberController {
     ) {
         if (memberService.getAll().stream()
                 .anyMatch(member -> member.email().equals(request.email())))
-            throw new ExceptionGenerator(StatusEnum.EDIT_CONFLICT_EMAIL);
+            throw new ExceptionGenerator(StatusEnum.CREATE_OR_EDIT_CONFLICT_EMAIL);
 
         MemberResponse response = memberService.update(id, request);
         return ResponseEntity.ok(response);

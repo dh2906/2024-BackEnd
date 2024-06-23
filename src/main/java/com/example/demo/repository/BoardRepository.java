@@ -10,8 +10,6 @@ public interface BoardRepository {
 
     Board findById(Long id);
 
-    Board insert(Board board);
-
     void deleteById(Long id);
 
     Board update(Board board);

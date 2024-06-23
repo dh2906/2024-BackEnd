@@ -35,7 +35,7 @@ public class BoardService {
     @Transactional
     public BoardResponse createBoard(BoardCreateRequest request) {
         Board board = new Board(request.name());
-        Board saved = boardRepository.insert(board);
+        Board saved = boardRepository.update(board);
         return BoardResponse.from(saved);
     }
 

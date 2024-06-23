@@ -35,7 +35,7 @@ public class MemberService {
 
     @Transactional
     public MemberResponse create(MemberCreateRequest request) {
-        Member member = memberRepository.insert(
+        Member member = memberRepository.update(
             new Member(request.name(), request.email(), request.password())
         );
         return MemberResponse.from(member);

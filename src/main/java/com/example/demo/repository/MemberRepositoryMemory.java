@@ -33,14 +33,6 @@ public class MemberRepositoryMemory implements MemberRepository {
     }
 
     @Override
-    public Member insert(Member member) {
-        long id = autoincrement.getAndIncrement();
-        members.put(id, member);
-        member.setId(id);
-        return member;
-    }
-
-    @Override
     public Member update(Member member) {
         return members.put(member.getId(), member);
     }
