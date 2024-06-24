@@ -31,13 +31,13 @@ public class Article {
     private LocalDateTime modifiedAt;
 
     public Article(
-        Long id,
-        Long authorId,
-        Long boardId,
-        String title,
-        String content,
-        LocalDateTime createdAt,
-        LocalDateTime modifiedAt
+            Long id,
+            Long authorId,
+            Long boardId,
+            String title,
+            String content,
+            LocalDateTime createdAt,
+            LocalDateTime modifiedAt
     ) {
         this.id = id;
         this.authorId = authorId;
@@ -103,5 +103,17 @@ public class Article {
 
     public LocalDateTime getModifiedAt() {
         return modifiedAt;
+    }
+
+    public void setBoardId(Long boardId) {
+        this.boardId = boardId;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

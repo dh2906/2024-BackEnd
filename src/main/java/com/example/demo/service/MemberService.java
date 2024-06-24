@@ -35,7 +35,7 @@ public class MemberService {
 
     @Transactional
     public MemberResponse create(MemberCreateRequest request) {
-        Member member = memberRepository.update(
+        Member member = memberRepository.insert(
             new Member(request.name(), request.email(), request.password())
         );
         return MemberResponse.from(member);
@@ -50,7 +50,7 @@ public class MemberService {
     public MemberResponse update(Long id, MemberUpdateRequest request) {
         Member member = memberRepository.findById(id);
         member.update(request.name(), request.email());
-        memberRepository.update(member);
+        memberRepository.update(id, member);
         return MemberResponse.from(member);
     }
 }

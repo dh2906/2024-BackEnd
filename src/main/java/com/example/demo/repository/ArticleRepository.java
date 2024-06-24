@@ -14,7 +14,9 @@ public interface ArticleRepository {
 
     Article findById(Long id);
 
-    Article update(Article article);
+    Article insert(Article article);
+
+    Article update(Long id, Article article);
 
     void deleteById(Long id);
 }

@@ -21,8 +21,7 @@ public class BoardRepositoryJpa implements BoardRepository {
         return entityManager.createQuery("""
                 SELECT b
                 FROM Board b
-                """, Board.class)
-                .getResultList();
+                """, Board.class).getResultList();
     }
 
     @Override
@@ -31,9 +30,7 @@ public class BoardRepositoryJpa implements BoardRepository {
                 SELECT b 
                 FROM Board b 
                 WHERE b.id = :id
-                """, Board.class)
-                .setParameter("id", id)
-                .getSingleResult();
+                """, Board.class).setParameter("id", id).getSingleResult();
     }
 
     @Override
@@ -42,8 +39,17 @@ public class BoardRepositoryJpa implements BoardRepository {
     }
 
     @Override
-    public Board update(Board board) {
+    public Board insert(Board board) {
         entityManager.persist(board);
         return findById(board.getId());
+    }
+
+    @Override
+    public Board update(Long id, Board board) {
+        Board temp = entityManager.find(Board.class, id);
+
+        temp.setName(board.getName());
+
+        return temp;
     }
 }

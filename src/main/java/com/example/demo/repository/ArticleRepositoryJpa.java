@@ -23,8 +23,7 @@ public class ArticleRepositoryJpa implements ArticleRepository {
         return entityManager.createQuery("""
                 SELECT a
                 FROM Article a
-                """, Article.class)
-                .getResultList();
+                """, Article.class).getResultList();
     }
 
     @Override
@@ -33,9 +32,7 @@ public class ArticleRepositoryJpa implements ArticleRepository {
                 SELECT a
                 FROM Article a
                 WHERE a.boardId = :boardId
-                """, Article.class)
-                .setParameter("boardId", boardId)
-                .getResultList();
+                """, Article.class).setParameter("boardId", boardId).getResultList();
     }
 
     @Override
@@ -44,9 +41,7 @@ public class ArticleRepositoryJpa implements ArticleRepository {
                 SELECT a
                 FROM Article a
                 WHERE a.authorId = :memberId
-                """, Article.class)
-                .setParameter("memberId", memberId)
-                .getResultList();
+                """, Article.class).setParameter("memberId", memberId).getResultList();
     }
 
     @Override
@@ -55,9 +50,20 @@ public class ArticleRepositoryJpa implements ArticleRepository {
     }
 
     @Override
-    public Article update(Article article) {
+    public Article insert(Article article) {
         entityManager.persist(article);
         return findById(article.getId());
+    }
+
+    @Override
+    public Article update(Long id, Article article) {
+        Article temp = entityManager.find(Article.class, id);
+
+        temp.setBoardId(article.getBoardId());
+        temp.setTitle(article.getTitle());
+        temp.setContent(article.getContent());
+
+        return temp;
     }
 
     @Override

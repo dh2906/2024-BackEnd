@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import java.util.List;
 
+import com.example.demo.domain.Article;
 import com.example.demo.domain.Board;
 
 public interface BoardRepository {
@@ -12,5 +13,7 @@ public interface BoardRepository {
 
     void deleteById(Long id);
 
-    Board update(Board board);
+    Board insert(Board board);
+
+    Board update(Long id, Board board);
 }

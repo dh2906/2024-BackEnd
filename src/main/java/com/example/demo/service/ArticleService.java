@@ -63,7 +63,7 @@ public class ArticleService {
             request.title(),
             request.description()
         );
-        Article saved = articleRepository.update(article);
+        Article saved = articleRepository.insert(article);
         Member member = memberRepository.findById(saved.getAuthorId());
         Board board = boardRepository.findById(saved.getBoardId());
         return ArticleResponse.of(saved, member, board);
@@ -73,7 +73,7 @@ public class ArticleService {
     public ArticleResponse update(Long id, ArticleUpdateRequest request) {
         Article article = articleRepository.findById(id);
         article.update(request.boardId(), request.title(), request.description());
-        Article updated = articleRepository.update(article);
+        Article updated = articleRepository.update(id, article);
         Member member = memberRepository.findById(updated.getAuthorId());
         Board board = boardRepository.findById(article.getBoardId());
         return ArticleResponse.of(article, member, board);

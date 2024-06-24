@@ -19,9 +19,8 @@ public class MemberRepositoryJpa implements MemberRepository {
     @Override
     public List<Member> findAll() {
         return entityManager.createQuery("""
-            SELECT m FROM Member m
-            """, Member.class)
-            .getResultList();
+                SELECT m FROM Member m
+                """, Member.class).getResultList();
     }
 
     @Override
@@ -30,15 +29,23 @@ public class MemberRepositoryJpa implements MemberRepository {
                 SELECT m
                 FROM Member m
                 WHERE m.id = :id
-                """, Member.class)
-                .setParameter("id", id)
-                .getSingleResult();
+                """, Member.class).setParameter("id", id).getSingleResult();
     }
 
     @Override
-    public Member update(Member member) {
+    public Member insert(Member member) {
         entityManager.persist(member);
         return findById(member.getId());
+    }
+
+    @Override
+    public Member update(Long id, Member member) {
+        Member temp = entityManager.find(Member.class, id);
+
+        temp.setName(member.getName());
+        temp.setEmail(member.getEmail());
+
+        return temp;
     }
 
     @Override
