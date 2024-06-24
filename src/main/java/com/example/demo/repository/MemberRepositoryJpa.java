@@ -2,7 +2,6 @@ package com.example.demo.repository;
 
 import java.util.List;
 
-import com.example.demo.domain.Article;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 

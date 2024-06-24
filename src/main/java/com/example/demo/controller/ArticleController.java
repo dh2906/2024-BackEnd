@@ -3,11 +3,6 @@ package com.example.demo.controller;
 import java.net.URI;
 import java.util.List;
 
-import com.example.demo.controller.dto.response.BoardResponse;
-import com.example.demo.exception.ExceptionGenerator;
-import com.example.demo.exception.StatusEnum;
-import com.example.demo.service.BoardService;
-import com.example.demo.service.MemberService;
 import com.example.demo.validate.ArticleValidate;
 import com.example.demo.validate.BoardValidate;
 import com.example.demo.validate.MemberValidate;

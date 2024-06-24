@@ -2,8 +2,6 @@ package com.example.demo.service;
 
 import java.util.List;
 
-import com.example.demo.exception.ExceptionGenerator;
-import com.example.demo.exception.StatusEnum;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
