@@ -3,10 +3,14 @@ package com.example.demo.controller;
 import java.net.URI;
 import java.util.List;
 
+import com.example.demo.controller.dto.response.BoardResponse;
 import com.example.demo.exception.ExceptionGenerator;
 import com.example.demo.exception.StatusEnum;
 import com.example.demo.service.BoardService;
 import com.example.demo.service.MemberService;
+import com.example.demo.validate.ArticleValidate;
+import com.example.demo.validate.BoardValidate;
+import com.example.demo.validate.MemberValidate;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,36 +31,36 @@ import com.example.demo.service.ArticleService;
 public class ArticleController {
 
     private final ArticleService articleService;
-    private final BoardService boardService;
-    private final MemberService memberService;
+    private final ArticleValidate articleValidate;
+    private final BoardValidate boardValidate;
+    private final MemberValidate memberValidate;
 
     public ArticleController(ArticleService articleService,
-                             BoardService boardService,
-                             MemberService memberService) {
+                             ArticleValidate articleValidate,
+                             BoardValidate boardValidate,
+                             MemberValidate memberValidate) {
         this.articleService = articleService;
-        this.boardService = boardService;
-        this.memberService = memberService;
+        this.articleValidate = articleValidate;
+        this.boardValidate = boardValidate;
+        this.memberValidate = memberValidate;
     }
 
     @GetMapping("/articles")
     public ResponseEntity<List<ArticleResponse>> getArticles(
-        @RequestParam Long boardId
+            @RequestParam Long boardId
     ) {
         List<ArticleResponse> response = articleService.getByBoardId(boardId);
 
-        if (response.isEmpty())
-            throw new ExceptionGenerator(StatusEnum.READ_NOT_PRESENT_ARTICLE);
+        articleValidate.validateResponseIsEmpty(response);
 
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/articles/{id}")
     public ResponseEntity<ArticleResponse> getArticle(
-        @PathVariable Long id
+            @PathVariable Long id
     ) {
-        if (articleService.getAll().stream()
-                .noneMatch(article -> article.getId().equals(id)))
-            throw new ExceptionGenerator(StatusEnum.READ_NOT_PRESENT_ARTICLE);
+        articleValidate.validateContainId(id);
 
         ArticleResponse response = articleService.getById(id);
         return ResponseEntity.ok(response);
@@ -64,13 +68,10 @@ public class ArticleController {
 
     @PostMapping("/articles")
     public ResponseEntity<ArticleResponse> crateArticle(
-        @Valid @RequestBody ArticleCreateRequest request
+            @Valid @RequestBody ArticleCreateRequest request
     ) {
-        if (boardService.getBoards().stream()
-                .noneMatch(board -> board.id().equals(request.boardId())) ||
-                memberService.getAll().stream()
-                        .noneMatch(member -> member.id().equals(request.authorId())))
-            throw new ExceptionGenerator(StatusEnum.CREATE_NOT_PRESENT_BOARD);
+        boardValidate.validateCreateContainId(request.boardId());
+        memberValidate.validateCreateContainId(request.authorId());
 
         ArticleResponse response = articleService.create(request);
         return ResponseEntity.created(URI.create("/articles/" + response.id())).body(response);
@@ -78,12 +79,10 @@ public class ArticleController {
 
     @PutMapping("/articles/{id}")
     public ResponseEntity<ArticleResponse> updateArticle(
-        @PathVariable Long id,
-        @Valid @RequestBody ArticleUpdateRequest request
+            @PathVariable Long id,
+            @Valid @RequestBody ArticleUpdateRequest request
     ) {
-        if (boardService.getBoards().stream()
-                .noneMatch(board -> board.id().equals(request.boardId())))
-            throw new ExceptionGenerator(StatusEnum.EDIT_NOT_PRESENT_BOARD);
+        boardValidate.validateUpdateContainId(request.boardId());
 
         ArticleResponse response = articleService.update(id, request);
         return ResponseEntity.ok(response);
@@ -91,7 +90,7 @@ public class ArticleController {
 
     @DeleteMapping("/articles/{id}")
     public ResponseEntity<Void> updateArticle(
-        @PathVariable Long id
+            @PathVariable Long id
     ) {
         articleService.delete(id);
         return ResponseEntity.noContent().build();

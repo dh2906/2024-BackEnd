@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import java.util.List;
 
+import com.example.demo.exception.ExceptionGenerator;
+import com.example.demo.exception.StatusEnum;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,9 +26,9 @@ public class ArticleService {
     private final BoardRepository boardRepository;
 
     public ArticleService(
-        ArticleRepository articleRepository,
-        MemberRepository memberRepository,
-        BoardRepository boardRepository
+            ArticleRepository articleRepository,
+            MemberRepository memberRepository,
+            BoardRepository boardRepository
     ) {
         this.articleRepository = articleRepository;
         this.memberRepository = memberRepository;
@@ -47,21 +49,21 @@ public class ArticleService {
     public List<ArticleResponse> getByBoardId(Long boardId) {
         List<Article> articles = articleRepository.findAllByBoardId(boardId);
         return articles.stream()
-            .map(article -> {
-                Member member = memberRepository.findById(article.getAuthorId());
-                Board board = boardRepository.findById(article.getBoardId());
-                return ArticleResponse.of(article, member, board);
-            })
-            .toList();
+                .map(article -> {
+                    Member member = memberRepository.findById(article.getAuthorId());
+                    Board board = boardRepository.findById(article.getBoardId());
+                    return ArticleResponse.of(article, member, board);
+                })
+                .toList();
     }
 
     @Transactional
     public ArticleResponse create(ArticleCreateRequest request) {
         Article article = new Article(
-            request.authorId(),
-            request.boardId(),
-            request.title(),
-            request.description()
+                request.authorId(),
+                request.boardId(),
+                request.title(),
+                request.description()
         );
         Article saved = articleRepository.insert(article);
         Member member = memberRepository.findById(saved.getAuthorId());
@@ -83,4 +85,6 @@ public class ArticleService {
     public void delete(Long id) {
         articleRepository.deleteById(id);
     }
+
+
 }

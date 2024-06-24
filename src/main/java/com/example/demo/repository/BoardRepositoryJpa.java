@@ -26,11 +26,7 @@ public class BoardRepositoryJpa implements BoardRepository {
 
     @Override
     public Board findById(Long id) {
-        return entityManager.createQuery("""
-                SELECT b 
-                FROM Board b 
-                WHERE b.id = :id
-                """, Board.class).setParameter("id", id).getSingleResult();
+        return entityManager.find(Board.class, id);
     }
 
     @Override

@@ -2,6 +2,10 @@ package com.example.demo.service;
 
 import java.util.List;
 
+import com.example.demo.controller.dto.request.ArticleCreateRequest;
+import com.example.demo.controller.dto.request.ArticleUpdateRequest;
+import com.example.demo.exception.ExceptionGenerator;
+import com.example.demo.exception.StatusEnum;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +27,8 @@ public class BoardService {
 
     public List<BoardResponse> getBoards() {
         return boardRepository.findAll().stream()
-            .map(BoardResponse::from)
-            .toList();
+                .map(BoardResponse::from)
+                .toList();
     }
 
     public BoardResponse getBoardById(Long id) {
@@ -51,4 +55,6 @@ public class BoardService {
         Board updated = boardRepository.update(id, board);
         return BoardResponse.from(updated);
     }
+
+
 }

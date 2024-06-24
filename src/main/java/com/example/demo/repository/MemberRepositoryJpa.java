@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import java.util.List;
 
+import com.example.demo.domain.Article;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
@@ -25,11 +26,7 @@ public class MemberRepositoryJpa implements MemberRepository {
 
     @Override
     public Member findById(Long id) {
-        return entityManager.createQuery("""
-                SELECT m
-                FROM Member m
-                WHERE m.id = :id
-                """, Member.class).setParameter("id", id).getSingleResult();
+        return entityManager.find(Member.class, id);
     }
 
     @Override

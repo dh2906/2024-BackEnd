@@ -5,6 +5,8 @@ import java.util.List;
 import com.example.demo.exception.ExceptionGenerator;
 import com.example.demo.exception.StatusEnum;
 import com.example.demo.service.ArticleService;
+import com.example.demo.validate.ArticleValidate;
+import com.example.demo.validate.BoardValidate;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,58 +25,57 @@ import com.example.demo.service.BoardService;
 @RestController
 public class BoardController {
     private final BoardService boardService;
-    private final ArticleService articleService;
+    private final BoardValidate boardValidate;
+    private final ArticleValidate articleValidate;
 
     public BoardController(BoardService boardService,
-                           ArticleService articleService) {
+                           BoardValidate boardValidate,
+                           ArticleValidate articleValidate) {
         this.boardService = boardService;
-        this.articleService = articleService;
+        this.boardValidate = boardValidate;
+        this.articleValidate = articleValidate;
     }
 
     @GetMapping("/boards")
     public List<BoardResponse> getBoards() {
         List<BoardResponse> response = boardService.getBoards();
 
-        if (response.isEmpty())
-            throw new ExceptionGenerator(StatusEnum.READ_NOT_PRESENT_BOARD);
+        boardValidate.validateResponseIsEmpty(response);
 
         return response;
     }
 
     @GetMapping("/boards/{id}")
     public BoardResponse getBoard(
-        @PathVariable Long id
+            @PathVariable Long id
     ) {
-        if (boardService.getBoards().stream()
-                .noneMatch(board -> board.id().equals(id)))
-            throw new ExceptionGenerator(StatusEnum.READ_NOT_PRESENT_BOARD);
+        boardValidate.validateReadContainId(id);
 
         return boardService.getBoardById(id);
     }
 
     @PostMapping("/boards")
     public BoardResponse createBoard(
-        @Valid @RequestBody BoardCreateRequest request
+            @Valid @RequestBody BoardCreateRequest request
     ) {
         return boardService.createBoard(request);
     }
 
     @PutMapping("/boards/{id}")
     public BoardResponse updateBoard(
-        @PathVariable Long id,
-        @Valid @RequestBody BoardUpdateRequest updateRequest
+            @PathVariable Long id,
+            @Valid @RequestBody BoardUpdateRequest updateRequest
     ) {
         return boardService.update(id, updateRequest);
     }
 
     @DeleteMapping("/boards/{id}")
     public ResponseEntity<Void> deleteBoard(
-        @PathVariable Long id
+            @PathVariable Long id
     ) {
-        if (articleService.getAll().stream()
-                .anyMatch(article -> article.getBoardId().equals(id)))
-            throw new ExceptionGenerator(StatusEnum.DELETE_BOARD_PRESENT_ARTICLE);
+        articleValidate.validateExistBoardId(id);
         boardService.deleteBoard(id);
+
         return ResponseEntity.noContent().build();
     }
 }
