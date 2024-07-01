@@ -70,7 +70,6 @@ public class BoardController {
     public ResponseEntity<Void> deleteBoard(
             @PathVariable Long id
     ) {
-        articleValidate.validateExistBoardId(id);
         boardService.deleteBoard(id);
 
         return ResponseEntity.noContent().build();
