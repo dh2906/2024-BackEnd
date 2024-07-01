@@ -29,13 +29,13 @@ public class ArticleValidate {
 
     public void validateExistBoardId(Long id) {
         if (articleService.getAll().stream()
-                .anyMatch(article -> article.getBoardId().equals(id)))
+                .anyMatch(article -> article.getBoard().getId().equals(id)))
             throw new ExceptionGenerator(StatusEnum.DELETE_BOARD_PRESENT_ARTICLE);
     }
 
     public void validateExistAuthorId(Long id) {
         if (articleService.getAll().stream()
-                .anyMatch(article -> article.getAuthorId().equals(id)))
+                .anyMatch(article -> article.getAuthor().getId().equals(id)))
             throw new ExceptionGenerator(StatusEnum.DELETE_MEMBER_PRESENT_ARTICLE);
     }
 }
