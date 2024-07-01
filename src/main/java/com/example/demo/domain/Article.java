@@ -104,16 +104,4 @@ public class Article {
     public LocalDateTime getModifiedAt() {
         return modifiedAt;
     }
-
-    public void setBoardId(Long boardId) {
-        this.boardId = boardId;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
 }

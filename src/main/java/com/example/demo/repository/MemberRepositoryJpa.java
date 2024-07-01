@@ -38,8 +38,10 @@ public class MemberRepositoryJpa implements MemberRepository {
     public Member update(Long id, Member member) {
         Member temp = entityManager.find(Member.class, id);
 
-        temp.setName(member.getName());
-        temp.setEmail(member.getEmail());
+        temp.update(
+                member.getName(),
+                member.getEmail()
+        );
 
         return temp;
     }

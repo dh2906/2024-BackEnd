@@ -58,9 +58,11 @@ public class ArticleRepositoryJpa implements ArticleRepository {
     public Article update(Long id, Article article) {
         Article temp = entityManager.find(Article.class, id);
 
-        temp.setBoardId(article.getBoardId());
-        temp.setTitle(article.getTitle());
-        temp.setContent(article.getContent());
+        temp.update(
+                article.getBoardId(),
+                article.getTitle(),
+                article.getContent()
+        );
 
         return temp;
     }

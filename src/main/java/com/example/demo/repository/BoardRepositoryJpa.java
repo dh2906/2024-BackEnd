@@ -44,7 +44,7 @@ public class BoardRepositoryJpa implements BoardRepository {
     public Board update(Long id, Board board) {
         Board temp = entityManager.find(Board.class, id);
 
-        temp.setName(board.getName());
+        temp.update(board.getName());
 
         return temp;
     }
