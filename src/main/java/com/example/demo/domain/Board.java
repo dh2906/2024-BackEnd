@@ -16,7 +16,7 @@ public class Board {
     @Column
     private String name;
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Article> articles = new ArrayList<>();
 
     public Board(Long id, String name) {
