@@ -1,6 +1,7 @@
 package com.example.demo.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 
 import java.util.ArrayList;
 import java.util.List;
