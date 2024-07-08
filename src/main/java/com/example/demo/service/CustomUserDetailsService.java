@@ -1,13 +1,14 @@
 package com.example.demo.service;
 
+import com.example.demo.controller.dto.request.CustomUserDetails;
 import com.example.demo.domain.Member;
+import com.example.demo.exception.ExceptionGenerator;
+import com.example.demo.exception.StatusEnum;
 import com.example.demo.repository.MemberRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -23,14 +24,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         //DB에서 조회
-        Optional<Member> member = memberRepository.findByEmail(email);
+        Member member = memberRepository
+                .findByEmail(email)
+                .orElseThrow(
+                        () -> new ExceptionGenerator(StatusEnum.LOGIN_UNSUCCESSFUL)
+                );
 
-        if (member != null) {
-
-            //UserDetails에 담아서 return하면 AutneticationManager가 검증 함
-            return new CustomUserDetails(member);
-        }
-
-        return null;
+        return new CustomUserDetails(member.getEmail(), "USER");
     }
 }

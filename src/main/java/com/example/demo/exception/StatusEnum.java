@@ -9,7 +9,9 @@ public enum StatusEnum {
     CREATE_OR_EDIT_EMPTY_REQUEST(400, "Bad Request", "요청 내용에 Null 또는 공백이 들어갔습니다."),
     CREATE_NOT_PRESENT_BOARD(400, "Bad Request", "존재하지 않는 내용을 참조하고 있습니다."),
     DELETE_MEMBER_PRESENT_ARTICLE(400, "Bad Request", "해당 사용자가 작성한 게시물이 존재합니다."),
-    LOGIN_UNSUCCESSFUL(401, "Unauthorized", "로그인에 실패했습니다.");
+    LOGIN_UNSUCCESSFUL(401, "Unauthorized", "로그인에 실패했습니다."),
+    TOKEN_NULL(401, "Unauthorized", "토큰이 정상적이지 않습니다."),
+    TOKEN_EXPIRED(401, "Unauthorized", "토큰의 유효시간이 만료되었습니다");
 
 
     private final Integer statusCode;

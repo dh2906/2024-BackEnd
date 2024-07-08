@@ -18,15 +18,13 @@ public class AuthValidate {
         this.passwordEncoder  = passwordEncoder;
     }
 
-    public boolean validateLogInCorrectPassword(LogInRequest request) {
-        if (passwordEncoder.matches(
+    public void validateLogInCorrectPassword(LogInRequest request) {
+        if (!passwordEncoder.matches(
                 request.password(),
                 memberService
                         .getByEmail(request.email())
                         .getPassword())
         )
-            return true;
-
-        throw new ExceptionGenerator(StatusEnum.LOGIN_PASSWORD_NOT_CORRECT);
+            throw new ExceptionGenerator(StatusEnum.LOGIN_UNSUCCESSFUL);
     }
 }

@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
-import com.example.demo.controller.dto.request.MemberCreateRequest;
 import com.example.demo.controller.dto.request.LogInRequest;
+import com.example.demo.controller.dto.request.MemberCreateRequest;
 import com.example.demo.domain.Member;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.validate.AuthValidate;
@@ -21,6 +21,7 @@ public class AuthService {
         this.authValidate = authValidate;
         this.passwordEncoder = passwordEncoder;
     }
+
     public void register(MemberCreateRequest request) {
         Member member = new Member(
                 request.name(),
@@ -31,11 +32,7 @@ public class AuthService {
         memberRepository.save(member);
     }
 
-    public boolean logIn(LogInRequest request) {
-        if (authValidate.validateLogInCorrectPassword(request)) {
-            return true;
-        }
-
-        return false;
+    public void logIn(LogInRequest request) {
+        authValidate.validateLogInCorrectPassword(request);
     }
 }

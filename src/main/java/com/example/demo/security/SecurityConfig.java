@@ -7,9 +7,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -55,30 +55,28 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(
                 (auth) -> auth
-                        .requestMatchers("/login", "/register").permitAll()
-                        .requestMatchers("/main", "/posts/**", "/articles/**", "/members/**").hasRole("USER")
+                        .requestMatchers("/main/**", "/posts/**", "/articles/**", "/members").hasRole("USER")
                         .requestMatchers("/boards/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
         );
 
-        http.addFilterBefore(
-                new JwtFilter(jwtUtil),
-                LoginFilter.class
-        );
+        http
+                .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
-        //AuthenticationManager()와 JWTUtil 인수 전달
-        http.addFilterAt(
-                new LoginFilter(
-                        authenticationManager(authenticationConfiguration),
-                        jwtUtil
-                ),
-                UsernamePasswordAuthenticationFilter.class
-        );
+        http
+                .sessionManagement((session) -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        http.sessionManagement(
-                (session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        );
 
         return http.build();
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> {
+            web.ignoring()
+                    .requestMatchers("/register")
+                    .requestMatchers("/login"); // 필터를 타면 안되는 경로
+        };
     }
 }
