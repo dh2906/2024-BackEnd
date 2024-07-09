@@ -42,6 +42,6 @@ public class AuthController {
         httpServletResponse.addHeader("Authorization", "Bearer " + token);
         System.out.println("로그인 성공");
 
-        return ResponseEntity.status(201).build();
+        return ResponseEntity.status(200).build();
     }
 }
